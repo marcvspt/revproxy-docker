@@ -17,13 +17,6 @@ services:
         networks:
             - reverseproxy-web-network
 
-    certbot:
-        container_name: certbot
-        hostname: certbot
-        image: certbot/certbot:latest
-        volumes:
-            - webcerts-letsencrypt:/etc/letsencrypt/:rw
-
     webphp:
         container_name: webphp
         hostname: webphp
