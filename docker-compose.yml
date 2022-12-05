@@ -10,6 +10,7 @@ services:
         restart: always
         volumes:
             - ./nginxrevproxy/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./nginxrevproxy/conf/:/etc/nginx/conf.d/:ro
             - ./certbot-var-www:/var/www/certbot/:ro
             - webcerts-letsencrypt:/etc/letsencrypt/:ro
         ports:
