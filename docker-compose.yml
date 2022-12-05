@@ -1,0 +1,99 @@
+version: '3.7'
+
+services:
+    nginxrevproxy:
+        container_name: nginxrevproxy
+        hostname: nginxrevproxy
+        build:
+            context: ./nginxrevproxy
+            dockerfile: Dockerfile
+        restart: always
+        volumes:
+            - ./nginxrevproxy/nginx.conf:/etc/nginx/nginx.conf:ro
+            - webcerts-letsencrypt:/etc/letsencrypt/:ro
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - reverseproxy-web-network
+
+    certbot:
+        container_name: certbot
+        hostname: certbot
+        image: certbot/certbot:latest
+        volumes:
+            - webcerts-letsencrypt:/etc/letsencrypt/:rw
+
+    webphp:
+        container_name: webphp
+        hostname: webphp
+        build:
+            context: ./webphp
+            dockerfile: Dockerfile
+        restart: always
+        volumes:
+            - ./webphp/html:/var/www/html
+        depends_on:
+            - dbphp
+        links:
+            - dbphp:dbphp
+        expose:
+            - 80
+        networks:
+            - reverseproxy-web-network
+            - reverseproxy-dbphp-network
+
+    dbphp:
+        container_name: dbphp
+        hostname: dbphp
+        image: mariadb:latest
+        restart: always
+        volumes:
+            - webphp-db-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'webphp_root'
+            MYSQL_USER: 'webphp_user'
+            MYSQL_PASSWORD: 'webphp_password'
+            MYSQL_DATABASE: 'webphp'
+        ports:
+            - 127.0.0.1:3306:3306
+        networks:
+            - reverseproxy-dbphp-network
+
+    webnodejs:
+        container_name: webnodejs
+        hostname: webnodejs
+        build:
+            context: ./webnodejs
+            dockerfile: Dockerfile
+        restart: always
+        expose:
+            - 8080
+        networks:
+            - reverseproxy-web-network
+
+    webpython:
+        container_name: webpython
+        hostname: webpython
+        build:
+            context: ./webpython
+            dockerfile: Dockerfile
+        restart: always
+        expose:
+            - 5000
+        networks:
+            - reverseproxy-web-network
+
+volumes:
+    webphp-db-data:
+        name: webphp-db-data
+
+    webcerts-letsencrypt:
+        name: webcerts-letsencrypt
+
+networks:
+    reverseproxy-web-network:
+        name: reverseproxy-web-network
+
+    reverseproxy-dbphp-network:
+        name: reverseproxy-dbphp-network
