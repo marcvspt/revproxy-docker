@@ -4,15 +4,25 @@ services:
     nginxrevproxy:
         container_name: nginxrevproxy
         hostname: nginxrevproxy
-        build:
-            context: ./nginxrevproxy
-            dockerfile: Dockerfile
+        image: nginx:latest
         restart: always
         volumes:
-            - /etc/letsencrypt:/etc/letsencrypt/:ro
+            - ./nginxrevproxy/conf:/etc/nginx/conf.d
+            - ./certbot/www:/var/www/certbot
+            - ./certbot/conf/:/etc/nginx/ssl
         ports:
             - 80:80
             - 443:443
+        networks:
+            - reverseproxy-web-network
+    
+    certbot:
+        container_name: certbot
+        hostname: certbot
+        image: certbot/certbot:latest
+        volumes:
+            - ./certbot/www:/var/www/certbot:rw
+            - ./certbot/conf/:/etc/letsencrypt/:rw
         networks:
             - reverseproxy-web-network
 
@@ -79,9 +89,6 @@ services:
 volumes:
     webphp-db-data:
         name: webphp-db-data
-
-    webcerts-letsencrypt:
-        name: webcerts-letsencrypt
 
 networks:
     reverseproxy-web-network:
