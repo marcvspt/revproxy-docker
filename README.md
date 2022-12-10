@@ -16,6 +16,11 @@ You must replace ```<domain>``` by your domain, in the routes, server_name, etc.
 * [**python.conf**](nginxrevproxy/conf/python.conf)
 * [**php.conf**](nginxrevproxy/conf/php.conf)
 
+Up the service and test the containers:
+```bash
+docker-compose up -d
+```
+
 ## Install and Deploy SSL
 Once probed the services, we can create the certifies. Run the next command, but replace ```<your.email>``` for your mail:
 ```bash
