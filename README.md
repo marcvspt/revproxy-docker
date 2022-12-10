@@ -7,6 +7,7 @@
 ## Install and Deploy Web Services
 First, we need to up the containers and probe the redirection with the subdomains without SSL, just **HTTP:80**
 ```bash
+git clone https://github.com/atriox2510/reverseProxyMultiWebDocker
 docker-compose up -d
 ```
 
