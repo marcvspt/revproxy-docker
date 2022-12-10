@@ -1,8 +1,8 @@
-# reverseProxyMultiWebDocker
+# Reverse-Proxy MultiWeb with Docker
 ## Requeriments
 * A domain
-* Server with docker, docker-compose and Public IP address
-* Set 3 subdomains: php.<your.domain>, nodejs.<your.domain>, python.<your.domain>
+* Server with docker, docker-compose and a server with Public IP address
+* Set 3 subdomains: **php.<your.domain>**, **nodejs.<your.domain>**, **python.<your.domain>**
 
 ## Install and Deploy Web Services
 First, we need to up the containers and probe the redirection with the subdomains without SSL, just **HTTP:80**
@@ -31,12 +31,12 @@ Now, we need to stop the containers and modify the config files.
 ```bash
 docker-compose down
 ```
-We comment lines 12 **(location / {)** and 14 **(proxy_pass http://webnodejs:8080)**, uncomment lines 13 **(if ($host = nodejs.<your.domain>) {)** and 15 **(return 301 http://$host$request_uri)**. Also the SSL-HTTPS configuration from lines 19 to 30 in the configuration files:
+We comment lines 12 ```location / {``` and 14 ```proxy_pass http://webnodejs:8080```, uncomment lines 13 ```if ($host = nodejs.<your.domain>) {)``` and 15 ```return 301 http://$host$request_uri```. Also the SSL-HTTPS configuration from lines 19 to 30 in the config files:
 * [**nodejs.conf**](nginxrevproxy/conf/nodejs.conf)
 * [**python.conf**](nginxrevproxy/conf/python.conf)
 * [**php.conf**](nginxrevproxy/conf/php.conf)
 
-In the case of [**none.conf**](nginxrevproxy/conf/none.conf), which is the default SSL page, we comment lines 12 **(location / {)**, 14 **(proxy_pass  http://localhost)** and 15 **(index  index.html index.htm)**, uncomment 13 **(if ($host = <your.domain>) {)** and 16 **(return 301 http://$host$request_uri)**, as well as the SSL from lines 20 to 32.
+In the case of [**none.conf**](nginxrevproxy/conf/none.conf), which is the default SSL page, we comment lines 12 ```location / {```, 14 ```proxy_pass  http://localhost``` and 15 ```index  index.html index.htm)``` uncomment 13 ```if ($host = <your.domain>) {``` and 16 ```return 301 http://$host$request_uri```. Also the SSL-HTTPS configuration from lines 20 to 32.
 And now, we can turn on the containers:
 ```bash
 docker-compose up -d
