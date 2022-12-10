@@ -8,17 +8,16 @@
 First, we need to up the containers and probe the redirection with the subdomains without SSL, just **HTTP:80**
 ```bash
 git clone https://github.com/atriox2510/reverseProxyMultiWebDocker
-docker-compose up -d
+cd reverseProxyMultiWebDocker
 ```
-
-## Install and Deploy SSL
-Once probed the services, we can create the certifies, you must replace ```<your.domain>``` by your domain, in the routes, server_name, etc. Everything in all config files:
+You must replace ```<your.domain>``` by your domain, in the routes, server_name, etc. Everything in all config files:
 * [**none.conf**](nginxrevproxy/conf/none.conf)
 * [**nodejs.conf**](nginxrevproxy/conf/nodejs.conf)
 * [**python.conf**](nginxrevproxy/conf/python.conf)
 * [**php.conf**](nginxrevproxy/conf/php.conf)
 
-Later, run the next command, but replace ```<your.email>``` for your mail:
+## Install and Deploy SSL
+Once probed the services, we can create the certifies. Run the next command, but replace ```<your.email>``` for your mail:
 ```bash
 docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot --dry-run -d <your.domain> -d nodejs.<your.domain> -d python.<your.domain> -d php.<your.domain> --agree-tos
 ```
