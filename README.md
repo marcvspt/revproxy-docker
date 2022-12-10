@@ -23,7 +23,7 @@ Later, run the next command, but replace ```<your.email>``` for your mail:
 docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot --dry-run -d <your.domain> -d nodejs.<your.domain> -d python.<your.domain> -d php.<your.domain> --agree-tos
 ```
 
-If everything its **OK** with the certs, run the last command but, without "**--dry-run**":
+If everything its **OK** with the certs, run the last command but, without ```--dry-run```:
 ```bash
 docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot -d <your.domain> -d nodejs.<your.domain> -d python.<your.domain> -d php.<your.domain> --agree-tos
 ```
