@@ -8,8 +8,8 @@ services:
         restart: always
         volumes:
             - ./nginxrevproxy/conf:/etc/nginx/conf.d
-            - ./certbot/www:/var/www/certbot
-            - ./certbot/conf/:/etc/nginx/ssl
+            - ./nginxrevproxy/www:/var/www/certbot
+            - ./nginxrevproxy/ssl:/etc/nginx/ssl
         ports:
             - 80:80
             - 443:443
@@ -21,8 +21,8 @@ services:
         hostname: certbot
         image: certbot/certbot:latest
         volumes:
-            - ./certbot/www:/var/www/certbot:rw
-            - ./certbot/conf/:/etc/letsencrypt/:rw
+            - ./nginxrevproxy/www:/var/www/certbot:rw
+            - ./nginxrevproxy/ssl:/etc/letsencrypt/:rw
         networks:
             - reverseproxy-web-network
 
