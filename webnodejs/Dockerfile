@@ -1,5 +1,5 @@
 FROM node:18.15
-LABEL maintainer="Atriox Banished atriox.contacto@gmail.com"
+LABEL maintainer="Atriox Banished atriox.banished@hotmail.com"
 WORKDIR /app
 COPY ./package*.json ./
 RUN npm install
