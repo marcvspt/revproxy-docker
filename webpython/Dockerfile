@@ -1,5 +1,5 @@
 FROM python:3.10
-LABEL maintainer="Atriox Banished atriox.contacto@gmail.com"
+LABEL maintainer="Atriox Banished atriox.banished@hotmail.com"
 COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip install -r requirements.txt
