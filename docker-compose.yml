@@ -4,7 +4,7 @@ services:
     nginxrevproxy:
         container_name: nginxrevproxy
         hostname: nginxrevproxy
-        image: nginx:latest
+        image: nginx:1.23.4
         restart: always
         volumes:
             - ./nginxrevproxy/conf:/etc/nginx/conf.d
@@ -48,15 +48,15 @@ services:
     dbphp:
         container_name: dbphp
         hostname: dbphp
-        image: mariadb:latest
+        image: mariadb:10.7.8
         restart: always
         volumes:
             - webphp-db-data:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: 'webphp_root'
-            MYSQL_USER: 'webphp_user'
-            MYSQL_PASSWORD: 'webphp_password'
-            MYSQL_DATABASE: 'webphp'
+            MYSQL_ROOT_PASSWORD: webphp_root
+            MYSQL_USER: webphp_user
+            MYSQL_PASSWORD: webphp_password
+            MYSQL_DATABASE: webphp
         ports:
             - 127.0.0.1:3306:3306
         networks:
