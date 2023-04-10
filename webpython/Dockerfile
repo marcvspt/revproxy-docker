@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.10
 LABEL maintainer="Atriox Banished atriox.contacto@gmail.com"
 COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
