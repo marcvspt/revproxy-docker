@@ -33,12 +33,10 @@ services:
             context: ./webphp
             dockerfile: Dockerfile
         restart: always
-        volumes:
-            - ./webphp/html:/var/www/html
         depends_on:
             - dbphp
-        links:
-            - dbphp:dbphp
+        volumes:
+            - ./webphp/html:/var/www/html
         expose:
             - 80
         networks:
