@@ -91,6 +91,8 @@ volumes:
 networks:
     reverseproxy-web-network:
         name: reverseproxy-web-network
+        driver: bridge
 
     reverseproxy-dbphp-network:
         name: reverseproxy-dbphp-network
+        driver: bridge
