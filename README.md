@@ -1,54 +1,56 @@
-# Reverse-Proxy MultiWeb with Docker
+# Reverse-Proxy MultiWeb con Docker
 ## Requeriments
-* A domain
-* Server with docker, docker-compose and a server with Public IP address
-* Set 3 subdomains: ```php.<domain>```, ```nodejs.<domain>```, ```python.<domain>```
+* Un dominio
+* Servidor con docker, docker-compose y dirección IP pública
+* Configurar 4 subdominos en la zona DNS: `www.<domain>`, `php.<domain>`, `nodejs.<domain>`, `python.<domain>`
 
-## Install and Deploy Web Services
-First, we need to up the containers and probe the redirection with the subdomains without SSL, just **HTTP:80**
+## Instalar y desplegar servicios web
+Primero, necesitamos subir los contenedores y probar la redirección con los subdominios sin SSL, simplemente con **HTTP:80**
 ```bash
-git clone https://github.com/atriox2510/reverseProxyMultiWebDocker
-cd reverseProxyMultiWebDocker
+git clone https://github.com/atriox2510/RevProxy
+cd RevProxy
 ```
-You must replace ```<domain>``` by your domain, in the routes, server_name, etc. Everything in all config files:
-* [**none.conf**](nginxrevproxy/conf/none.conf)
-* [**nodejs.conf**](nginxrevproxy/conf/nodejs.conf)
-* [**python.conf**](nginxrevproxy/conf/python.conf)
-* [**php.conf**](nginxrevproxy/conf/php.conf)
 
-Up the service and test the containers:
+Debe sustituir `<dominio>` por su dominio, en las rutas, nombre_servidor, etc., en todos los archivos de configuración:
+* [**none.conf**](nginx/conf/none.conf)
+* [**nodejs.conf**](nginx/conf/nodejs.conf)
+* [**python.conf**](nginxconf/python.conf)
+* [**php.conf**](nginx/conf/php.conf)
+
+Levante los contenedores y espere a que inicien:
 ```bash
 docker-compose up -d
 ```
 
-## Install and Deploy SSL
-Once probed the services, we can create the certifies. Run the next command, but replace ```<your.email>``` for your mail:
+## Instalar y desplegar SSL
+Una vez probados los servicios, podemos crear los certificados. Ejecuta el siguiente comando, pero sustituye `<tu@email>` por tu correo:
 ```bash
-docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot --dry-run -d <domain> -d nodejs.<domain> -d python.<domain> -d php.<domain> --agree-tos
+docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot --dry-run -d <domain> -d www.<domain> -d nodejs.<domain> -d python.<domain> -d php.<domain> --agree-tos
 ```
 
-If everything its **OK** with the certs, run the last command but, without ```--dry-run```:
+Si todo está bien con los certificados debemos obtener un mensaje que diga lo siguiente `The dry run was successful`. Ahora ejecutamos el mismo comando ya sin `--dry-run`:
 ```bash
-docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot -d <domain> -d nodejs.<domain> -d python.<domain> -d php.<domain> --agree-tos
+docker-compose run --rm certbot certonly --email <your@email> --webroot --webroot-path /var/www/certbot -d <domain> -d www.<domain> -d nodejs.<domain> -d python.<domain> -d php.<domain> --agree-tos
 ```
 
-Now, we need to stop the containers and modify the config files.
+Ahora, tenemos que detener los contenedores y modificar los archivos de configuración.
 ```bash
 docker-compose down
 ```
-We comment lines 12 ```location / {``` and 14 ```proxy_pass http://webnodejs:8080```, uncomment lines 13 ```if ($host = nodejs.<domain>) {``` and 15 ```return 301 http://$host$request_uri```. Also the SSL-HTTPS configuration from lines 19 to 30 in the config files:
-* [**nodejs.conf**](nginxrevproxy/conf/nodejs.conf)
-* [**python.conf**](nginxrevproxy/conf/python.conf)
-* [**php.conf**](nginxrevproxy/conf/php.conf)
 
-In the case of [**none.conf**](nginxrevproxy/conf/none.conf), which is the default SSL page, we comment lines 12 ```location / {```, 14 ```proxy_pass  http://localhost``` and 15 ```index  index.html index.htm``` uncomment 13 ```if ($host = <domain>) {``` and 16 ```return 301 http://$host$request_uri```. Also the SSL-HTTPS configuration from lines 20 to 32.
-And now, we can turn on the containers:
+Comentamos las líneas: 12 `location / {` y 14 `proxy_pass http://webnodejs:8080`, descomentamos las líneas: 13 `if ($host = nodejs.<domain>) {` y 15 `return 301 http://$host$request_uri`. También la configuración SSL-HTTPS de las líneas 19 to 30 en los archivos de configuración:
+* [**nodejs.conf**](nginx/conf/nodejs.conf)
+* [**python.conf**](nginx/conf/python.conf)
+* [**php.conf**](nginx/conf/php.conf)
+
+En el caso de [**none.conf**](nginx/conf/none.conf), que es el SSL default, comentamos las líneas: 12 `location / {`, 14 `proxy_pass  http://localhost` y 15 `index  index.html index.htm`, descomentamos las líneas: 13 `if ($host = <domain>) {` y 16 `return 301 http://$host$request_uri`. También la configuración SSL-HTTPS de las líneas 20 a 32.
+Ahora, podemos levantar los contenedores:
 ```bash
 docker-compose up -d
 ```
 
-## Renew certificates
-We just need run the next command:
+## Renovar certificados
+Debemos ejecutar el siguiente comando:
 ```bash
 docker-compose run --rm certbot renew
 ```

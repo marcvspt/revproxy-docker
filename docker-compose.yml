@@ -2,29 +2,29 @@ version: '3.7'
 
 services:
     nginxrevproxy:
-        container_name: nginxrevproxy
-        hostname: nginxrevproxy
+        container_name: nginx
+        hostname: nginx
         image: nginx:1.23.4
         restart: always
         volumes:
-            - ./nginxrevproxy/conf:/etc/nginx/conf.d
-            - ./nginxrevproxy/www:/var/www/certbot
-            - ./nginxrevproxy/ssl:/etc/nginx/ssl
+            - ./nginx/conf:/etc/nginx/conf.d
+            - ./certbot/www:/var/www/certbot
+            - ./certbot/ssl:/etc/nginx/ssl
         ports:
             - 80:80
             - 443:443
         networks:
-            - reverseproxy-web-network
+            - revproxy-web-network
 
     certbot:
         container_name: certbot
         hostname: certbot
         image: certbot/certbot:latest
         volumes:
-            - ./nginxrevproxy/www:/var/www/certbot:rw
-            - ./nginxrevproxy/ssl:/etc/letsencrypt/:rw
+            - ./certbot/www:/var/www/certbot:rw
+            - ./certbot/ssl:/etc/letsencrypt/:rw
         networks:
-            - reverseproxy-web-network
+            - revproxy-web-network
 
     webphp:
         container_name: webphp
@@ -40,8 +40,8 @@ services:
         expose:
             - 80
         networks:
-            - reverseproxy-web-network
-            - reverseproxy-dbphp-network
+            - revproxy-web-network
+            - revproxy-dbphp-network
 
     dbphp:
         container_name: dbphp
@@ -55,10 +55,10 @@ services:
             MYSQL_USER: webphp_user
             MYSQL_PASSWORD: webphp_password
             MYSQL_DATABASE: webphp
-        ports:
-            - 127.0.0.1:3306:3306
+        expose:
+            - 3306
         networks:
-            - reverseproxy-dbphp-network
+            - revproxy-dbphp-network
 
     webnodejs:
         container_name: webnodejs
@@ -70,7 +70,7 @@ services:
         expose:
             - 8080
         networks:
-            - reverseproxy-web-network
+            - revproxy-web-network
 
     webpython:
         container_name: webpython
@@ -82,17 +82,17 @@ services:
         expose:
             - 5000
         networks:
-            - reverseproxy-web-network
+            - revproxy-web-network
 
 volumes:
     webphp-db-data:
         name: webphp-db-data
 
 networks:
-    reverseproxy-web-network:
-        name: reverseproxy-web-network
+    revproxy-web-network:
+        name: revproxy-web-network
         driver: bridge
 
-    reverseproxy-dbphp-network:
-        name: reverseproxy-dbphp-network
+    revproxy-dbphp-network:
+        name: revproxy-dbphp-network
         driver: bridge
