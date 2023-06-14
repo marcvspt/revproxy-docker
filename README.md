@@ -40,7 +40,7 @@ Ahora, tenemos que detener los contenedores y modificar los archivos de configur
 docker-compose down
 ```
 
-Comentamos la línea 11 `proxy_pass  http://<container>:<port>` y descomentamos la línea 12 `return 301 https://$server_name$request_uri;`. También descomentamos la configuración SSL-HTTPS de las líneas 16 a 33 en:
+Comentamos la línea 10 `proxy_pass  http://<container>:<port>` y descomentamos la línea 11 `return 301 https://$server_name$request_uri;`. También descomentamos la configuración SSL-HTTPS de las líneas 15 a 32 en:
 * [**nodejs.conf**](revproxy/conf/nodejs.conf)
 * [**python.conf**](revproxy/conf/python.conf)
 * [**php.conf**](revproxy/conf/php.conf)
