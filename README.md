@@ -1,5 +1,5 @@
 # Reverse-Proxy MultiWeb con Docker
-## Requeriments
+## Requerimientos
 * Un dominio
 * Servidor con docker, docker-compose y dirección IP pública
 * Configurar 4 subdominos en la zona DNS: `www.<domain>`, `php.<domain>`, `nodejs.<domain>`, `python.<domain>`
