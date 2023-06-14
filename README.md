@@ -1,4 +1,6 @@
 # Reverse-Proxy MultiWeb con Docker
+Este repositorio contiene las instrucciones para realizar la implementación de un **Reverse Proxy** con **SSL** en **Nginx** para cada una de las aplicaciones web. Todos los servicios, desde el **Reverse Proxy** hasta el **Certbot** para los certificados, son contenedores de **Docker**.
+
 ## Requerimientos
 * Un dominio
 * Servidor con docker, docker-compose y dirección IP pública
@@ -11,7 +13,7 @@ git clone https://github.com/atriox2510/RevProxy
 cd RevProxy
 ```
 
-Debe sustituir `<dominio>` por su dominio, en las rutas, `server_name`, etc., en todos los archivos de configuración:
+Debe sustituir `<domain>` por su dominio, en las rutas, `server_name`, etc., en todos los archivos de configuración:
 * [**default.conf**](revproxy/conf/default.conf)
 * [**nodejs.conf**](revproxy/conf/nodejs.conf)
 * [**python.conf**](revproxy/conf/python.conf)
@@ -43,7 +45,7 @@ Comentamos la línea 11 `proxy_pass  http://<container>:<port>` y descomentamos 
 * [**python.conf**](revproxy/conf/python.conf)
 * [**php.conf**](revproxy/conf/php.conf)
 
-En el caso de [**default.conf**](revproxy/conf/default.conf), que es el SSL default, comentamos las líneas 16 `root /var/www/html;`, 17 `try_files $uri $uri/ =404;` y descomentamos la 18 `return 301 https://$server_name$request_uri;`. También descomentamos la configuración SSL-HTTPS de las líneas 22 a 35.
+En el caso de [**default.conf**](revproxy/conf/default.conf), que es el SSL default, comentamos las líneas 16 `root /var/www/html;`, 17 `index index.html index.htm index.nginx-debian.html;`, 18 `try_files $uri $uri/ =404;` y descomentamos la 19 `return 301 https://$server_name$request_uri;`. También descomentamos la configuración SSL-HTTPS de las líneas 23 a 45.
 
 Ahora, podemos levantar los contenedores:
 ```bash

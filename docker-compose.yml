@@ -7,7 +7,7 @@ services:
         image: nginx:1.23.4
         restart: always
         volumes:
-            - ./revproxy/conf:/etc/revproxy/conf.d
+            - ./revproxy:/etc/revproxy/conf.d
             - ./certbot/www:/var/www/certbot
             - ./certbot/ssl:/etc/nginx/ssl
         ports:
@@ -68,7 +68,7 @@ services:
             dockerfile: Dockerfile
         restart: always
         expose:
-            - 8080
+            - 8000
         networks:
             - revproxy-web-network
 
