@@ -1,13 +1,13 @@
 version: '3.7'
 
 services:
-    nginxrevproxy:
-        container_name: nginx
-        hostname: nginx
+    revproxy:
+        container_name: revproxy
+        hostname: revproxy
         image: nginx:1.23.4
         restart: always
         volumes:
-            - ./nginx/conf:/etc/nginx/conf.d
+            - ./revproxy/conf:/etc/revproxy/conf.d
             - ./certbot/www:/var/www/certbot
             - ./certbot/ssl:/etc/nginx/ssl
         ports:

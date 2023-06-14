@@ -1,8 +1,7 @@
-FROM python:3.10
+FROM python:3.11-alpine
 LABEL maintainer="Atriox Banished atriox.banished@hotmail.com"
-COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
-RUN pip install -r requirements.txt
+RUN pip install flask
 COPY ./app ./
 ENTRYPOINT [ "python" ]
 CMD ["view.py" ]
