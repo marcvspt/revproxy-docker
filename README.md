@@ -9,7 +9,7 @@ Este repositorio contiene las instrucciones para realizar la implementación de 
 ## Instalar y desplegar servicios web
 Primero, necesitamos desplegar los contenedores y probar la redirección con los subdominios sin SSL, simplemente con **HTTP** por el puerto **80**:
 ```bash
-git clone https://github.com/atriox2510/revproxy-docker
+git clone https://github.com/marcvspt/revproxy-docker
 cd revproxy-docker
 ```
 
