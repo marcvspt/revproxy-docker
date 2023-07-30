@@ -13,7 +13,7 @@ git clone https://github.com/marcvspt/revproxy-docker
 cd revproxy-docker
 ```
 
-Debe sustituir `<domain>` por su dominio, en las rutas, `server_name`, etc., en todos los archivos de configuración:
+Debe sustituir `example-domain.local` por su dominio, en las rutas, `server_name`, etc., en todos los archivos de configuración:
 * [**default.conf**](revproxy/conf/default.conf)
 * [**nodejs.conf**](revproxy/conf/nodejs.conf)
 * [**python.conf**](revproxy/conf/python.conf)
@@ -57,3 +57,6 @@ Debemos ejecutar el siguiente comando:
 ```bash
 docker-compose run --rm certbot renew
 ```
+
+## Cambiar datos de entorno
+Podemos cambiar los puertos y algunos datos de la BD en el archivo [dotenv](./.env).

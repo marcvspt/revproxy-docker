@@ -4,10 +4,10 @@ services:
     revproxy:
         container_name: revproxy
         hostname: revproxy
-        image: nginx:1.23.4
+        image: nginx:stable-alpine-slim
         restart: always
         volumes:
-            - ./revproxy:/etc/revproxy/conf.d
+            - ./revproxy:/etc/nginx/conf.d
             - ./certbot/www:/var/www/certbot
             - ./certbot/ssl:/etc/nginx/ssl
         ports:
@@ -19,7 +19,7 @@ services:
     certbot:
         container_name: certbot
         hostname: certbot
-        image: certbot/certbot:latest
+        image: certbot/certbot:v2.6.0
         volumes:
             - ./certbot/www:/var/www/certbot:rw
             - ./certbot/ssl:/etc/letsencrypt/:rw
@@ -37,8 +37,15 @@ services:
             - dbphp
         volumes:
             - ./webphp/html:/var/www/html
+        environment:
+            DB_USER: ${DBPHP_USER}
+            DB_PASSWORD: ${DBPHP_PASSWORD}
+            DB_NAME: ${DBPHP_DATABASE}
+            DB_PORT: ${DBPHP_PORT}
+        env_file:
+            - ./.env
         expose:
-            - 80
+            - ${PHP_PORT}
         networks:
             - revproxy-web-network
             - revproxy-dbphp-network
@@ -46,17 +53,19 @@ services:
     dbphp:
         container_name: dbphp
         hostname: dbphp
-        image: mariadb:10.7.8
+        image: mariadb:lts
         restart: always
         volumes:
             - webphp-db-data:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: webphp_root
-            MYSQL_USER: webphp_user
-            MYSQL_PASSWORD: webphp_password
-            MYSQL_DATABASE: webphp
+            MYSQL_ROOT_PASSWORD: ${DBPHP_ROOT_PASSWORD}
+            MYSQL_USER: ${DBPHP_USER}
+            MYSQL_PASSWORD: ${DBPHP_PASSWORD}
+            MYSQL_DATABASE: ${DBPHP_DATABASE}
+        env_file:
+            - ./.env
         expose:
-            - 3306
+            - ${DBPHP_PORT}
         networks:
             - revproxy-dbphp-network
 
@@ -67,8 +76,12 @@ services:
             context: ./webnodejs
             dockerfile: Dockerfile
         restart: always
+        environment:
+            NODEJS_PORT: ${NODEJS_PORT}
         expose:
-            - 8000
+            - ${NODEJS_PORT}
+        env_file:
+            - ./.env
         networks:
             - revproxy-web-network
 
@@ -79,8 +92,12 @@ services:
             context: ./webpython
             dockerfile: Dockerfile
         restart: always
+        environment:
+            PYTHON_PORT: ${PYTHON_PORT}
+        env_file:
+            - ./.env
         expose:
-            - 5000
+            - ${PYTHON_PORT}
         networks:
             - revproxy-web-network
 

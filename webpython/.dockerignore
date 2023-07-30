@@ -1,7 +1,10 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
-node_modules
-package-lock.json
-npm-debug.log
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+pip-log.txt
+*.log
 .git

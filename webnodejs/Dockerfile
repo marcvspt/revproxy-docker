@@ -1,7 +1,9 @@
-FROM node:18.15
-LABEL maintainer="Atriox Banished atriox.banished@hotmail.com"
+FROM node:lts-slim
+LABEL maintainer="Marcvs <marcvspt@gmail.com>"
+
 WORKDIR /app
-COPY ./package*.json ./
-RUN npm install
 COPY ./app ./
+
+RUN npm install
+
 CMD [ "node", "server.js" ]

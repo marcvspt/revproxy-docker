@@ -1,0 +1,23 @@
+{
+    "name": "docker_nodejs_webapp",
+    "version": "1.0.0",
+    "description": "Node.js express server on Docker",
+    "author": "Marcvs <marcvspt@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/marcvspt/revproxy-docker"
+    },
+    "keywords": [
+        "reverseproxy",
+        "docker",
+        "nodejs",
+        "marcvspt"
+    ],
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "4.18.2"
+    }
+}

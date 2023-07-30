@@ -1,7 +1,9 @@
-FROM python:3.11-alpine
-LABEL maintainer="Atriox Banished atriox.banished@hotmail.com"
+FROM python:3.11-slim
+LABEL maintainer="Marcvs <marcvspt@gmail.com>"
+
 WORKDIR /app
-RUN pip install flask
 COPY ./app ./
-ENTRYPOINT [ "python" ]
-CMD ["view.py" ]
+
+RUN pip install -r requirements.txt
+
+CMD ["python", "server.py" ]

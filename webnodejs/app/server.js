@@ -1,17 +1,16 @@
-'use strict';
+const express = require('express')
+const path = require('path')
 
-const express = require('express');
+const PORT = process.env.NODEJS_PORT || 3000
 
-// Constants
-const PORT = 8000;
-const HOST = '0.0.0.0';
+const app = express()
+const templatesDir = path.join(__dirname, 'templates')
+app.use(express.static(templatesDir))
 
-// App
-const app = express();
 app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+    res.sendFile(path.join(templatesDir, 'index.html'));
+})
 
-app.listen(PORT, HOST, () => {
-    console.log(`Running on http://${HOST}:${PORT}`);
-});
+app.listen(PORT, () => {
+    console.log(`Running on http://0.0.0.0:${PORT}`)
+})
