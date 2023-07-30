@@ -1,10 +1,10 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
+.git
+*.log
 __pycache__
 *.pyc
 *.pyo
 *.pyd
 pip-log.txt
-*.log
-.git

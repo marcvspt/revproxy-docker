@@ -1,9 +1,10 @@
+*.log
+certbot
 __pycache__
 *.pyc
 *.pyo
 *.pyd
 pip-log.txt
-*.log
 node_modules
 package-lock.json
 npm-debug.log

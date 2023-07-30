@@ -1,7 +1,8 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
+.git
+*.log
 node_modules
 package-lock.json
 npm-debug.log
-.git
